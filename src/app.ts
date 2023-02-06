@@ -8,6 +8,7 @@ import {routes} from './routes/index.js';
 
 // Config
 import {config} from 'dotenv';
+
 config();
 
 // Express
@@ -16,12 +17,12 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use('/', routes)
+app.use('/', routes);
 
 // Database
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
-    app.listen(process.env.PORT, () => {
-        console.log(`Listening on port ${process.env.PORT}`);
-    });
+  app.listen(process.env.PORT, () => {
+    console.log(`Listening on port ${process.env.PORT}`);
+  });
 }).catch(() => console.log("Failed to connect to database"));

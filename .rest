@@ -1,4 +1,14 @@
-GET http://localhost:3341/hello
+POST http://localhost:3341/homie
+Content-Type: application/json
+
+{
+  "name": "Joe Momma",
+  "email": "joemomma@gmail.com"
+}
+
+###
+### Get One Homie
+GET http://localhost:3341/homie/63e0372a9d859e637a944c00
 Accept: application/json
 
 ###

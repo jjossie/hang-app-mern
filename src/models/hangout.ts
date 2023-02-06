@@ -16,9 +16,9 @@ const HangoutSchema = new mongoose.Schema({
             votes: [{
                 homie: {type: ObjectId, required: true},
                 timeTaken: Number
-            }]
+            }],
         }],
-    }]
+    }],
 });
 
 export const HangoutModel = model("hangout", HangoutSchema);

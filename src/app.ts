@@ -6,9 +6,10 @@ import cors from 'cors';
 // Project Modules
 import {routes} from './routes/index.js';
 
-// Config
+// Import Config
 import {config} from 'dotenv';
 
+// Setup Config
 config();
 
 // Express
@@ -18,6 +19,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/', routes);
+
 
 // Database
 

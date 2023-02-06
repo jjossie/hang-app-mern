@@ -12,6 +12,13 @@
     "https"
   ],
   "paths": {
+    "/api-docs": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
     "/hello": {
       "get": {
         "description": "",
@@ -28,18 +35,11 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
+            "name": "homie",
             "in": "body",
+            "description": "Creating a new homie. This (for now) will not add them to a hangout",
             "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/homie"
             }
           }
         ],
@@ -66,7 +66,10 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Get a homie by ID",
+            "schema": {
+              "$ref": "#/definitions/homie"
+            }
           },
           "404": {
             "description": "Not Found"
@@ -80,13 +83,16 @@
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "example": "Joe Momma"
         },
         "email": {
-          "type": "string"
+          "type": "string",
+          "example": "joemomma@gmail.com"
         },
         "isReady": {
-          "type": "string"
+          "type": "boolean",
+          "example": false
         }
       },
       "required": [

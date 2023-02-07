@@ -1,11 +1,15 @@
 import {HomieModel} from "../models/homie.js";
 
 export async function createHomie(name: String, email: String): Promise<object> {
-  return HomieModel.create({
+  const newHomie = new HomieModel({
     name: name,
     email: email,
     isReady: false,
   });
+  const result = await newHomie.save();
+  return {
+    id: result._id
+  };
 }
 
 export async function getHomieById(homieId: String): Promise<object> {

@@ -26,7 +26,8 @@ routes.post('/homie', async (req, res) => {
   try {
     const newHomie = req.body;
     const result = await createHomie(newHomie.name, newHomie.email);
-    res.status(204).json(result);
+    console.log(result);
+    res.status(201).json(result);
   } catch (e) {
     res.status(400).send("Invalid homie");
   }

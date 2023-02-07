@@ -2,8 +2,8 @@ POST http://localhost:3341/homie
 Content-Type: application/json
 
 {
-  "name": "Joe Momma",
-  "email": "joemomma@gmail.com"
+  "name": "Patrick Mahomes",
+  "email": "chiefs15@gmail.com"
 }
 
 ###

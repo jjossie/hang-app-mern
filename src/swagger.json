@@ -5,7 +5,7 @@
     "description": "HangApp allows a group of homies to make decisions in a group using tinder-style swipe voting. This API is for interacting with the data of hangouts and homies.",
     "version": "1.0.0"
   },
-  "host": "localhost:3341",
+  "host": "hang-app.onrender.com",
   "basePath": "/",
   "schemes": [
     "http",
@@ -17,17 +17,6 @@
         "description": "",
         "parameters": [],
         "responses": {}
-      }
-    },
-    "/hello": {
-      "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
       }
     },
     "/homie": {
@@ -44,8 +33,8 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "201": {
+            "description": "Created"
           },
           "400": {
             "description": "Bad Request"

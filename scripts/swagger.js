@@ -1,7 +1,8 @@
-import swaggerAutogen from "swagger-autogen";
-import {config} from "dotenv";
-
-config();
+const swaggerAutogen = require('swagger-autogen')();
+// import swaggerAutogen from "swagger-autogen";
+// import {config} from "dotenv";
+//
+// config();
 
 const doc = {
   info: {
@@ -9,7 +10,7 @@ const doc = {
     description: 'HangApp allows a group of homies to make decisions in a group using tinder-style swipe voting. This API is for interacting with the data of hangouts and homies.',
   },
 
-  host: `localhost:${process.env.PORT}`,
+  host: `hang-app.onrender.com`,
   schemes: ['http', 'https'],
 
   definitions: {

@@ -1,7 +1,7 @@
 import Router from 'express';
 import {createHomie, getHomieById} from "../controllers/hangout.js";
 import swaggerUi from 'swagger-ui-express';
-import swaggerDoc from "../swagger.json" assert { type: "json" };
+import swaggerDoc from "../swagger.json" assert {type: "json"};
 
 export const routes = Router();
 // routes.get('/', (req, res) => {

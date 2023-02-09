@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 
 // Project Modules
-import {routes} from './routes/index.js';
+import {routes} from './routes';
 
 // Import Config
 import {config} from 'dotenv';
@@ -23,9 +23,12 @@ app.use('/', routes);
 
 
 // Database
-
+mongoose.set('strictQuery', true); // Suppress warning
 mongoose.connect(process.env.MONGODB_URI).then(() => {
+  console.log(`|***********************************|`);
+  console.log(`| Successfully connected to DB!`);
   app.listen(process.env.PORT, () => {
-    console.log(`Listening on port ${process.env.PORT}`);
+    console.log(`| HangApp listening on port ${process.env.PORT}`);
+    console.log(`|***********************************|\n`);
   });
 }).catch(() => console.log("Failed to connect to database"));

@@ -1,4 +1,4 @@
-import {HomieModel} from "../models/homie.js";
+import {HomieModel} from "../models/homie";
 
 export async function createHomie(name: String, email: String): Promise<object> {
   const newHomie = new HomieModel({

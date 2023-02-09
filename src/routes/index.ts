@@ -1,5 +1,5 @@
 import Router from 'express';
-import {createHomie, getHomieById} from "../controllers/hangout.js";
+import {createHomie, getHomieById} from "../controllers/hangout";
 import swaggerUi from 'swagger-ui-express';
 import swaggerDoc from "../swagger.json";
 

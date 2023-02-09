@@ -11,7 +11,7 @@ const doc = {
   },
 
   host: `hang-app.onrender.com`,
-  schemes: ['http', 'https'],
+  schemes: ['https'],
 
   definitions: {
     homie: {

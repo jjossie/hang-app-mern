@@ -8,8 +8,8 @@
   "host": "hang-app.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http",
-    "https"
+    "https",
+    "http"
   ],
   "paths": {
     "/api-docs": {
@@ -19,7 +19,7 @@
         "responses": {}
       }
     },
-    "/homie": {
+    "/homie/": {
       "post": {
         "description": "",
         "parameters": [
@@ -64,6 +64,169 @@
             "description": "Not Found"
           }
         }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "homieId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "homie",
+            "in": "body",
+            "description": "Editing an existing homie. This (for now) will not add them to a hangout",
+            "schema": {
+              "$ref": "#/definitions/homie"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully edited the homie"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/homie/{homieId}/readyUp": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "homieId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Ready up a single homie. Sets their isReady status to true"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/hangout/": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "homie",
+            "in": "body",
+            "description": "Creating a new hangout",
+            "schema": {
+              "$ref": "#/definitions/newHangout"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/hangout/{hangoutId}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "hangoutId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Found Hangout by ID",
+            "schema": {
+              "$ref": "#/definitions/hangout"
+            }
+          },
+          "400": {
+            "description": "Something else went wrong",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "404": {
+            "description": "Could not find hangout - wrong ID",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/hangout/{hangoutId}/addHomie/{homieId}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "hangoutId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Hangout to add a homie to"
+          },
+          {
+            "name": "homieId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID of the homie to add",
+            "schema": {
+              "$ref": "#/definitions/hangout"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/hangout/{hangoutId}/removeHomie/{homieId}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "hangoutId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "homieId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully removed user from hangout"
+          },
+          "400": {
+            "description": "Failed to remove user from hangout"
+          }
+        }
       }
     }
   },
@@ -86,6 +249,57 @@
       },
       "required": [
         "name"
+      ]
+    },
+    "newHangout": {
+      "type": "object",
+      "properties": {
+        "creator": {
+          "type": "string",
+          "example": "63e813521329eb317607ee25"
+        }
+      },
+      "required": [
+        "creator"
+      ]
+    },
+    "hangout": {
+      "type": "object",
+      "properties": {
+        "creator": {
+          "type": "string",
+          "example": "63e813521329eb317607ee25"
+        },
+        "homies": {
+          "type": "array",
+          "example": [
+            "63e813521329eb317607ee25",
+            "63e0372a9d859e637a944c00",
+            "63e10d4d3defab4fa0bde684"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "creator"
+      ]
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Something went wrong."
+        },
+        "error": {
+          "type": "object",
+          "properties": {}
+        }
+      },
+      "required": [
+        "message"
       ]
     }
   }

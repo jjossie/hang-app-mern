@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 
-export class Homie {
-  constructor() {
-  }
-
+export interface Homie {
   name: string;
   email: string;
   isReady: boolean;

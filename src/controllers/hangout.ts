@@ -1,31 +1,37 @@
+import {Hangout, HangoutModel} from "../models/hangout";
+import assert from "assert";
 import {HomieModel} from "../models/homie";
+import {Types} from "mongoose";
+import ObjectId = Types.ObjectId;
 
-export async function createHomie(name: String, email: String): Promise<object> {
-  const newHomie = new HomieModel({
-    name: name,
-    email: email,
-    isReady: false,
-  });
-  const result = await newHomie.save();
+
+export async function createHangout(hangout: Hangout): Promise<object> {
+  if (!hangout.homies)
+    hangout.homies = [hangout.creator];
+  const newHangout = new HangoutModel(hangout);
+  const result = await newHangout.save();
   return {
-    id: result._id
+    id: result._id,
   };
 }
 
-export async function getHomieById(homieId: String): Promise<object> {
-  return HomieModel.findById(homieId);
+export async function getHangoutById(hangoutId: String): Promise<object> {
+  return HangoutModel.findById(hangoutId);
 }
 
-export async function getHomieByEmail(email: String): Promise<object> {
-  return HomieModel.find({email: email});
+
+export async function addHomieToHangout(hangoutId: string, homieId: string): Promise<object> {
+  assert(await HomieModel.findById(homieId)); // Do I need to confirm the homie exists?
+  const hangout = await HangoutModel.findById(hangoutId);
+  if (hangout.homies.filter(obj => obj.toString() === homieId).length == 0)
+    hangout.homies.push(new ObjectId(homieId)); // Only add them if they're not added already
+
+  return await hangout.save();
 }
 
-export async function readyUpHomie(homieId: String): Promise<object> {
-  return HomieModel.findByIdAndUpdate(homieId, {
-    isReady: true,
-  });
-}
-
-export async function isHomieReady(homieId: String): Promise<object> {
-  return HomieModel.findById(homieId, 'isReady');
+export async function removeHomieFromHangout(hangoutId: string, homieId: string): Promise<object> {
+  assert(await HomieModel.findById(homieId)); // Do I need to confirm the homie exists?
+  const hangout = await HangoutModel.findById(hangoutId);
+  hangout.homies = hangout.homies.filter(obj => obj.toString() !== homieId);
+  return await hangout.save();
 }

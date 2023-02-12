@@ -1,33 +1,30 @@
 import mongoose, {model} from "mongoose";
 
-const ObjectId = mongoose.Schema.Types.ObjectId;
+import ObjectId = mongoose.Schema.Types.ObjectId;
 
 export interface Vote {
-  homie: string
-  timeTaken: number
+  homie: string;
+  timeTaken: number;
 }
 
 export interface Option {
-  text: string
-  score: number
-  author: string
-  votes: [Vote]
+  text: string;
+  score: number;
+  author: string;
+  votes: [Vote];
 }
 
 export interface Decision {
-  prompt: string
-  media?: string
-  options?: [Option]
+  prompt: string;
+  media?: string;
+  options?: [Option];
 }
 
 export interface Hangout {
-  creator: string
-  homies?: [string]
-
-  decision?: [Decision]
-
+  creator: string;
+  homies?: [string];
+  decision?: [Decision];
 }
-
 
 
 const HangoutSchema = new mongoose.Schema({

@@ -1,8 +1,4 @@
 const swaggerAutogen = require('swagger-autogen')();
-// import swaggerAutogen from "swagger-autogen";
-// import {config} from "dotenv";
-//
-// config();
 
 const doc = {
   info: {
@@ -11,13 +7,30 @@ const doc = {
   },
 
   host: `hang-app.onrender.com`,
-  schemes: ['https'],
+  // host: `localhost:3341`,
+  schemes: ['https', 'http'],
+  // schemes: ['http'],
 
   definitions: {
     homie: {
       $name: "Joe Momma",
       email: "joemomma@gmail.com",
       isReady: false
+    },
+    newHangout: {
+      $creator: "63e813521329eb317607ee25"
+    },
+    hangout: {
+      $creator: "63e813521329eb317607ee25",
+      homies: [
+          "63e813521329eb317607ee25",
+          "63e0372a9d859e637a944c00",
+          "63e10d4d3defab4fa0bde684"
+      ]
+    },
+    error: {
+      $message: "Something went wrong.",
+      error: {}
     }
   }
 }

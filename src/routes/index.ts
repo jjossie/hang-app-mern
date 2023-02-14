@@ -12,6 +12,12 @@ export const routes = Router();
 routes.use('/api-docs', swaggerUi.serve);
 routes.get('/api-docs', swaggerUi.setup(swaggerDoc));
 
+// Base
+routes.get('/', (req, res) => {
+  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+});
+
+// Entities
 routes.use('/homie', homieRouter);
 routes.use('/hangout', hangoutRouter);
 routes.use('/decision', decisionRouter);

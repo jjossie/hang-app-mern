@@ -1,6 +1,7 @@
 import {createHomie, getHomieById, readyUpHomie, updateHomie} from "../controllers/homie";
 import Router from 'express';
 import {Homie} from "../models/homie";
+import {requiresAuth} from "express-openid-connect";
 
 export const homieRouter = Router();
 
@@ -42,7 +43,7 @@ homieRouter.get('/:homieId', async (req, res) => {
   }
 });
 
-homieRouter.put('/:homieId', async (req, res) => {
+homieRouter.put('/:homieId', requiresAuth(), async (req, res) => {
   /*  #swagger.parameters['homie'] = {
       in: 'body',
       description: 'Editing an existing homie. This (for now) will not add them to a hangout',
@@ -65,7 +66,7 @@ homieRouter.put('/:homieId', async (req, res) => {
   }
 });
 
-homieRouter.put('/:homieId/readyUp', async (req, res) => {
+homieRouter.put('/:homieId/readyUp', requiresAuth(), async (req, res) => {
   /*  #swagger.responses[204] = {
       description: 'Ready up a single homie. Sets their isReady status to true',
 } */

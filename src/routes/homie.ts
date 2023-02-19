@@ -45,12 +45,15 @@ homieRouter.get('/:homieId', async (req, res) => {
 
 homieRouter.put('/:homieId', requiresAuth(), async (req, res) => {
   /*  #swagger.parameters['homie'] = {
-      in: 'body',
-      description: 'Editing an existing homie. This (for now) will not add them to a hangout',
-      schema: { $ref: '#/definitions/homie' }
+        in: 'body',
+        description: 'Editing an existing homie. This (for now) will not add them to a hangout',
+        schema: { $ref: '#/definitions/homie' }
       }
       #swagger.responses[204] = {
-      description: 'Successfully edited the homie'
+        description: 'Successfully edited the homie'
+      }
+      #swagger.responses[401] = {
+        description: 'Not logged in'
   } */
   try {
     const homieId = req.params.homieId;

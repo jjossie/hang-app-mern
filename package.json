@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/jjossie/hang-app-mern#readme",
   "devDependencies": {
+    "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/node": "^18.11.19",
     "nodemon": "^2.0.20",

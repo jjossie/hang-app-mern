@@ -1,11 +1,11 @@
-import {Hangout, HangoutModel} from "../models/hangout";
+import {IHangout, HangoutModel} from "../models/hangout";
 import assert from "assert";
 import {HomieModel} from "../models/homie";
 import {Types} from "mongoose";
 import ObjectId = Types.ObjectId;
 
 
-export async function createHangout(hangout: Hangout): Promise<object | null> {
+export async function createHangout(hangout: IHangout): Promise<object | null> {
   if (!hangout.homies)
     hangout.homies = [hangout.creator];
   const newHangout = new HangoutModel(hangout);
@@ -23,8 +23,10 @@ export async function getHangoutById(hangoutId: String): Promise<object | null> 
 export async function addHomieToHangout(hangoutId: string, homieId: string): Promise<object | null> {
   assert(await HomieModel.findById(homieId)); // Do I need to confirm the homie exists?
   const hangout = await HangoutModel.findById(hangoutId);
-  if (!hangout)
-    throw new Error("Could not find hangout");
+  if (!hangout) throw new Error("Could not find hangout");
+  if (!hangout.homies)
+    hangout.homies = [new ObjectId(homieId)]
+
   if (hangout.homies.filter(obj => obj.toString() === homieId).length == 0)
     hangout.homies.push(new ObjectId(homieId)); // Only add them if they're not added already
 
@@ -34,8 +36,9 @@ export async function addHomieToHangout(hangoutId: string, homieId: string): Pro
 export async function removeHomieFromHangout(hangoutId: string, homieId: string): Promise<object | null> {
   assert(await HomieModel.findById(homieId)); // Do I need to confirm the homie exists?
   const hangout = await HangoutModel.findById(hangoutId);
-  if (!hangout)
-    throw new Error("Could not find hangout");
+  if (!hangout)        throw new Error("Could not find hangout");
+  if (!hangout.homies) throw new Error("No Homies attached to hangout");
+
   hangout.homies = hangout.homies.filter(obj => obj.toString() !== homieId);
   return await hangout.save();
 }

@@ -1,48 +1,51 @@
-import mongoose, {model} from "mongoose";
+import {Schema, Types, model} from "mongoose";
 
-import ObjectId = mongoose.Schema.Types.ObjectId;
-
-export interface Vote {
-  homie: string;
+export interface IVote {
+  homie: Types.ObjectId;
   timeTaken: number;
 }
 
-export interface Option {
+export interface IOption {
   text: string;
-  score: number;
-  author: string;
-  votes: [Vote];
+  score?: number;
+  author: Types.ObjectId;
+  votes: IVote[];
 }
 
-export interface Decision {
+export interface IDecision {
   prompt: string;
   media?: string;
-  options?: [Option];
+  options?: IOption[];
 }
 
-export interface Hangout {
-  creator: string;
-  homies?: [string];
-  decision?: [Decision];
+export interface IHangout {
+  creator: Types.ObjectId;
+  homies?: Types.ObjectId[];
+  decision?: IDecision;
 }
 
+export const VoteSchema = new Schema<IVote>({
+  homie: {type: Schema.Types.ObjectId, required: true},
+  timeTaken: {type: Number, required: true},
+});
 
-const HangoutSchema = new mongoose.Schema({
-  creator: {type: ObjectId, required: true},
-  homies: [ObjectId],
-  decision: [{
-    prompt: {type: String, required: true},
-    media: String,
-    options: [{
-      text: {type: String, required: true},
-      score: Number,
-      author: {type: ObjectId, required: true},
-      votes: [{
-        homie: {type: ObjectId, required: true},
-        timeTaken: Number,
-      }],
-    }],
-  }],
+export const OptionSchema = new Schema<IOption>({
+  text: {type: String, required: true},
+  score: Number,
+  author: {type: Schema.Types.ObjectId, required: true},
+  votes: [VoteSchema],
+});
+
+export const DecisionSchema = new Schema<IDecision>({
+  prompt: {type: String, required: true},
+  media: String,
+  options: [OptionSchema],
+});
+
+const HangoutSchema = new Schema<IHangout>({
+  creator: {type: Schema.Types.ObjectId, required: true},
+  homies: [Schema.Types.ObjectId],
+  decision: DecisionSchema,
 });
 
 export const HangoutModel = model("hangout", HangoutSchema);

@@ -1,5 +1,5 @@
 import Router from 'express';
-import {Hangout} from "../models/hangout";
+import {IHangout} from "../models/hangout";
 import {addHomieToHangout, createHangout, getHangoutById, removeHomieFromHangout} from "../controllers/hangout";
 import {requiresAuth} from "express-openid-connect";
 
@@ -15,7 +15,7 @@ hangoutRouter.post('/', async (req, res) => {
   }
   */
   try {
-    const newHangout: Hangout = req.body;
+    const newHangout: IHangout = req.body;
     const result = await createHangout(newHangout);
     console.log(result);
     return res.status(201).json(result);
@@ -29,6 +29,11 @@ hangoutRouter.post('/', async (req, res) => {
 
 hangoutRouter.get('/:hangoutId', requiresAuth(), async (req, res) => {
   /*
+  #swagger.parameters['hangoutId'] = {
+    in: 'path',
+    description: 'ID of the hangout to get',
+    schema: '63e88b9404d2c96769002296'
+  }
   #swagger.responses[200] = {
      description: 'Found Hangout by ID',
      schema: { $ref: '#/definitions/hangout' }
@@ -64,7 +69,6 @@ hangoutRouter.put('/:hangoutId/addHomie/:homieId', requiresAuth(), async (req, r
       #swagger.parameters['homieId'] = {
         in: 'path',
         description: 'The ID of the homie to add',
-        schema: { $ref: '#/definitions/hangout' }
       }
   */
   try {

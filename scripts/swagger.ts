@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 const swaggerAutogen = require('swagger-autogen')();
 
 const doc = {
@@ -6,10 +9,10 @@ const doc = {
     description: 'HangApp allows a group of homies to make decisions in a group using tinder-style swipe voting. This API is for interacting with the data of hangouts and homies.',
   },
 
-  host: `hang-app.onrender.com`,
-  // host: `localhost:3341`,
-  schemes: ['https', 'http'],
-  // schemes: ['http'],
+  // host: `hang-app.onrender.com`,
+  host: `localhost:3341`,
+  // schemes: ['https', 'http'],
+  schemes: ['http'],
 
   definitions: {
     homie: {
@@ -35,7 +38,9 @@ const doc = {
   }
 }
 
-const outputFile = "../src/swagger.json";
+const outputFile = `../src/${process.env.SWAGGER_JSON_FILENAME}`;
 let endpointsFiles = ["../src/app.ts"];
-
-swaggerAutogen(outputFile, endpointsFiles, doc);
+swaggerAutogen(outputFile, endpointsFiles, doc)
+    .then(() => {
+      console.log(`Wrote to ${outputFile}`);
+    });

@@ -1,6 +1,15 @@
+// Import Config
+import {config} from 'dotenv';
+
+// Setup Config
+config();
+
+// Back to Imports
 import Router from 'express';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDoc from "../swagger.json";
+const swaggerPath = `../${process.env.SWAGGER_JSON_FILENAME}`;
+// import swaggerDoc from "../swagger.json";
+const swaggerDoc = require(swaggerPath);
 
 import {homieRouter} from "./homie";
 import {hangoutRouter} from "./hangout";
@@ -24,4 +33,4 @@ routes.get('/profile', requiresAuth(), async (req, res) => {
 // Entities
 routes.use('/homie', homieRouter);
 routes.use('/hangout', hangoutRouter);
-routes.use('/decision', decisionRouter);
+routes.use('/hangout', decisionRouter);

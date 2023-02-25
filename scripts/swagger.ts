@@ -15,6 +15,9 @@ const doc = {
   schemes: ['http'],
 
   definitions: {
+    newHomie: {
+      $name: "Joe Momma",
+    },
     homie: {
       $name: "Joe Momma",
       email: "joemomma@gmail.com",

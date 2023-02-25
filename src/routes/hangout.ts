@@ -1,12 +1,12 @@
 import Router from 'express';
 import {IHangout} from "../models/hangout";
 import {addHomieToHangout, createHangout, getHangoutById, removeHomieFromHangout} from "../controllers/hangout";
-import {requiresAuth} from "express-openid-connect";
+import {Request, Response} from "express";
 
 export const hangoutRouter = Router();
 
 
-hangoutRouter.post('/', async (req, res) => {
+hangoutRouter.post('/', async (req: Request, res: Response) => {
   /*
   #swagger.parameters['homie'] = {
     in: 'body',
@@ -27,7 +27,7 @@ hangoutRouter.post('/', async (req, res) => {
   }
 });
 
-hangoutRouter.get('/:hangoutId', requiresAuth(), async (req, res) => {
+hangoutRouter.get('/:hangoutId', /*requiresAuth(),*/ async (req: Request, res: Response) => {
   /*
   #swagger.parameters['hangoutId'] = {
     in: 'path',
@@ -61,20 +61,15 @@ hangoutRouter.get('/:hangoutId', requiresAuth(), async (req, res) => {
   }
 });
 
-hangoutRouter.put('/:hangoutId/addHomie/:homieId', requiresAuth(), async (req, res) => {
+hangoutRouter.put('/:hangoutId/join', /*requiresAuth(),*/ async (req: Request, res: Response) => {
   /*  #swagger.parameters['hangoutId'] = {
         in: 'path',
         description: 'Hangout to add a homie to',
       }
-      #swagger.parameters['homieId'] = {
-        in: 'path',
-        description: 'The ID of the homie to add',
-      }
   */
   try {
     const hangoutId: string = req.params.hangoutId;
-    const homieId: string = req.params.homieId;
-    const result = await addHomieToHangout(hangoutId, homieId);
+    const result = await addHomieToHangout(hangoutId, req.homieId);
     return res.status(204).json(result);
   } catch (e) {
     return res.status(400).json({
@@ -84,7 +79,7 @@ hangoutRouter.put('/:hangoutId/addHomie/:homieId', requiresAuth(), async (req, r
   }
 });
 
-hangoutRouter.delete('/:hangoutId/removeHomie/:homieId', requiresAuth(), async (req, res) => {
+hangoutRouter.delete('/:hangoutId/leave', /*requiresAuth(),*/ async (req: Request, res: Response) => {
   /*
   #swagger.responses[200] = {
     description: 'Successfully removed user from hangout',
@@ -95,8 +90,7 @@ hangoutRouter.delete('/:hangoutId/removeHomie/:homieId', requiresAuth(), async (
   */
   try {
     const hangoutId: string = req.params.hangoutId;
-    const homieId: string = req.params.homieId;
-    const result = await removeHomieFromHangout(hangoutId, homieId);
+    const result = await removeHomieFromHangout(hangoutId, req.homieId);
     return res.status(200).json(result);
   } catch (e) {
     return res.status(400).json({

@@ -1,25 +1,29 @@
 import {createHomie, getHomieById, readyUpHomie, updateHomie} from "../controllers/homie";
 import Router from 'express';
-import {Homie} from "../models/homie";
-import {requiresAuth} from "express-openid-connect";
+import {IHomie} from "../models/homie";
 
 export const homieRouter = Router();
 
 
-homieRouter.post('/', async (req, res) => {
+homieRouter.post('/', /*requiresAuth(),*/ async (req, res) => {
   /*  #swagger.parameters['homie'] = {
         in: 'body',
         description: 'Creating a new homie. This (for now) will not add them to a hangout',
-        schema: { $ref: '#/definitions/homie' }
+        schema: { $ref: '#/definitions/newHomie' }
   } */
   try {
-    const newHomie: Homie = req.body;
-    const result = await createHomie(newHomie.name, newHomie.email);
-    console.log(result);
-    res.status(201).json(result);
+    const newHomie: IHomie = req.body;
+    if (!req.oidc.user)
+      return res.status(403).json({message: "needs auth, there was no user obj"});
+    try {
+      const result = await createHomie(newHomie.name, req.oidc.user.email);
+      return res.status(201).json(result);
+    } catch (e) {
+      return res.status(409).json({message: "Homie already exists with that email"});
+    }
   } catch (e) {
-    res.status(400).json({
-      message: "Invalid homie",
+    return res.status(400).json({
+      message: "Failed to create homie",
       error: e,
     });
   }
@@ -43,7 +47,10 @@ homieRouter.get('/:homieId', async (req, res) => {
   }
 });
 
-homieRouter.put('/:homieId', requiresAuth(), async (req, res) => {
+/**
+ * Not sure why one would need this
+ */
+homieRouter.put('/:homieId', /*requiresAuth(),*/ async (req, res) => {
   /*  #swagger.parameters['homie'] = {
         in: 'body',
         description: 'Editing an existing homie. This (for now) will not add them to a hangout',
@@ -57,7 +64,7 @@ homieRouter.put('/:homieId', requiresAuth(), async (req, res) => {
   } */
   try {
     const homieId = req.params.homieId;
-    const updatedHomie: Homie = req.body;
+    const updatedHomie: IHomie = req.body;
     const result = await updateHomie(homieId, updatedHomie);
     console.log(result);
     res.status(204).json(result);
@@ -69,13 +76,13 @@ homieRouter.put('/:homieId', requiresAuth(), async (req, res) => {
   }
 });
 
-homieRouter.put('/:homieId/readyUp', requiresAuth(), async (req, res) => {
+homieRouter.put('/readyUp', /*requiresAuth(),*/ async (req, res) => {
   /*  #swagger.responses[204] = {
       description: 'Ready up a single homie. Sets their isReady status to true',
 } */
   try {
-    const homieId = req.params.homieId;
-    const result = await readyUpHomie(homieId);
+    const email = req.oidc.user!.email;
+    const result = await readyUpHomie(email);
     console.log(result);
     res.status(204).json(result);
   } catch (e) {

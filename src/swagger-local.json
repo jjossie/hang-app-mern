@@ -49,7 +49,7 @@
             "in": "body",
             "description": "Creating a new homie. This (for now) will not add them to a hangout",
             "schema": {
-              "$ref": "#/definitions/homie"
+              "$ref": "#/definitions/newHomie"
             }
           }
         ],
@@ -59,6 +59,12 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "409": {
+            "description": "Conflict"
           }
         }
       }
@@ -117,17 +123,10 @@
         }
       }
     },
-    "/homie/{homieId}/readyUp": {
+    "/homie/readyUp": {
       "put": {
         "description": "",
-        "parameters": [
-          {
-            "name": "homieId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "204": {
             "description": "Ready up a single homie. Sets their isReady status to true"
@@ -199,7 +198,7 @@
         }
       }
     },
-    "/hangout/{hangoutId}/addHomie/{homieId}": {
+    "/hangout/{hangoutId}/join": {
       "put": {
         "description": "",
         "parameters": [
@@ -209,43 +208,24 @@
             "required": true,
             "type": "string",
             "description": "Hangout to add a homie to"
-          },
-          {
-            "name": "homieId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "The ID of the homie to add"
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "204": {
             "description": "No Content"
           },
           "400": {
             "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
           }
         }
       }
     },
-    "/hangout/{hangoutId}/removeHomie/{homieId}": {
+    "/hangout/{hangoutId}/leave": {
       "delete": {
         "description": "",
         "parameters": [
           {
             "name": "hangoutId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "homieId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -257,9 +237,6 @@
           },
           "400": {
             "description": "Failed to remove user from hangout"
-          },
-          "404": {
-            "description": "Not Found"
           }
         }
       }
@@ -333,6 +310,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "201": {
             "description": "Created"
           },
@@ -344,6 +324,18 @@
     }
   },
   "definitions": {
+    "newHomie": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Joe Momma"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
     "homie": {
       "type": "object",
       "properties": {

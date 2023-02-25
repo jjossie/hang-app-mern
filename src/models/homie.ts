@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 
-export interface Homie {
+export interface IHomie {
   name: string;
-  email: string;
-  isReady: boolean;
+  email?: string;
+  isReady?: boolean;
 }
 
-const HomieSchema = new mongoose.Schema({
+const HomieSchema = new mongoose.Schema<IHomie>({
   name: {type: String, required: true},
-  email: {type: String, index: true},
+  email: {type: String, required: true, index: true},
   isReady: Boolean,
 });
 

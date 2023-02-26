@@ -16,7 +16,7 @@ homieRouter.post('/', /*requiresAuth(),*/ async (req, res) => {
     if (!req.oidc.user)
       return res.status(403).json({message: "needs auth, there was no user obj"});
     try {
-      const result = await createHomie(newHomie.name, req.oidc.user.email);
+      const result = await createHomie(newHomie.name, req.oidc.user);
       return res.status(201).json(result);
     } catch (e) {
       return res.status(409).json({message: "Homie already exists with that email"});

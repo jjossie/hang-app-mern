@@ -1,15 +1,18 @@
 import {IHomie, HomieModel} from "../models/homie";
 import {HydratedDocument, Types} from "mongoose";
 
-export async function createHomie(name: String, email: String): Promise<object> {
-  const existingHomie = await HomieModel.findOne({email});
+export async function createHomie(name: String, tokenData: any): Promise<object> {
+  if (!tokenData.email)
+    throw new Error("No email found in token")
+  const existingHomie = await HomieModel.findOne({email: tokenData.email});
   if (existingHomie)
     throw new Error("Homie with that email already exists 🫠");
 
   const newHomie = new HomieModel({
     name: name,
-    email: email,
+    email: tokenData.email,
     isReady: false,
+    tokenData: tokenData
   });
   const result = await newHomie.save();
   return {

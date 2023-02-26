@@ -357,7 +357,7 @@
           {
             "name": "vote",
             "in": "body",
-            "description": "Details of the vote. Value should be -1, 0, or 1 for no, neutral, or yes, respectively.",
+            "description": "Details of the vote. Value should be -1, 0, or 1 for no, neutral, or yes, respectively. timeTaken is in seconds.",
             "schema": {
               "$ref": "#/definitions/voteInput"
             }
@@ -372,6 +372,41 @@
           },
           "204": {
             "description": "Voted successfully"
+          },
+          "400": {
+            "description": "Something else went wrong",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "404": {
+            "description": "Could not find something - wrong ID possibly",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/hangout/{hangoutId}/results": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "hangoutId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the hangout to vote in",
+            "schema": {
+              "type": "string",
+              "example": "63face4b17334f46d9b59ad7"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Got the winning options"
           },
           "400": {
             "description": "Something else went wrong",
@@ -530,14 +565,14 @@
           "type": "number",
           "example": 1
         },
-        "timeTakenSeconds": {
+        "timeTaken": {
           "type": "number",
           "example": 4
         }
       },
       "required": [
         "value",
-        "timeTakenSeconds"
+        "timeTaken"
       ]
     }
   }

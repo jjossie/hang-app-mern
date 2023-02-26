@@ -1,7 +1,8 @@
-import Router from 'express';
+import Router, {Request, Response} from 'express';
 import {IDecision, IOption, IOptionInput, IVote} from "../models/hangout";
-import {addDecisionToHangout, addOptionToHangout, voteOnOption} from "../controllers/decision";
+import {addDecisionToHangout, addOptionToHangout, getOptionRanking, voteOnOption} from "../controllers/decision";
 import {requiresAuth} from "express-openid-connect";
+import {hangoutRouter} from "./hangout";
 
 export const decisionRouter = Router();
 
@@ -125,4 +126,35 @@ decisionRouter.put("/:hangoutId/vote/:optionId", requiresAuth(), async (req, res
     return res.status(400).json({message: "Failed to vote on Option", error: e});
   }
 
+});
+
+hangoutRouter.get('/:hangoutId/results', async (req: Request, res: Response) => {
+  /*
+  #swagger.parameters['hangoutId'] = {
+    in: 'path',
+    description: 'ID of the hangout to vote in',
+    schema: '63face4b17334f46d9b59ad7'
+  }
+  #swagger.responses[200] = {
+    description: 'Got the winning options',
+  }
+  #swagger.responses[404] = {
+    description: 'Could not find something - wrong ID possibly',
+    schema: { $ref: '#/definitions/error' }
+  }
+  #swagger.responses[400] = {
+    description: 'Something else went wrong',
+    schema: { $ref: '#/definitions/error' }
+  }
+   */
+  try {
+    const hangoutId: string = req.params.hangoutId;
+    const result = await getOptionRanking(hangoutId);
+    return res.status(200).json(result);
+  } catch (e) {
+    return res.status(400).json({
+      message: "Couldn't get results",
+      error: e,
+    });
+  }
 });

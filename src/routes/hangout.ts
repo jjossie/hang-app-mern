@@ -17,8 +17,8 @@ hangoutRouter.post('/', async (req: Request, res: Response) => {
     // We could get hangout info from body, but also we have the creator in the request so let's do it ourselves
     // const newHangout: IHangout = req.body;
     const newHangout: IHangout = {
-      creator: req.homieId
-    }
+      creator: req.homieId,
+    };
     const result = await createHangout(newHangout);
     return res.status(201).json(result);
   } catch (e) {

@@ -328,7 +328,7 @@
         }
       }
     },
-    "/hangout/{hangoutId}/vote": {
+    "/hangout/{hangoutId}/vote/{optionId}": {
       "put": {
         "description": "",
         "parameters": [
@@ -336,21 +336,30 @@
             "name": "hangoutId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID of the hangout to vote in",
+            "schema": {
+              "type": "string",
+              "example": "63face4b17334f46d9b59ad7"
+            }
           },
           {
-            "name": "body",
-            "in": "body",
+            "name": "optionId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of option to vote on",
             "schema": {
-              "type": "object",
-              "properties": {
-                "vote": {
-                  "example": "any"
-                },
-                "option": {
-                  "example": "any"
-                }
-              }
+              "type": "string",
+              "example": "63fad375e256e291ae4d0245"
+            }
+          },
+          {
+            "name": "vote",
+            "in": "body",
+            "description": "Details of the vote. Value should be -1, 0, or 1 for no, neutral, or yes, respectively.",
+            "schema": {
+              "$ref": "#/definitions/voteInput"
             }
           }
         ],
@@ -361,8 +370,20 @@
           "201": {
             "description": "Created"
           },
+          "204": {
+            "description": "Voted successfully"
+          },
           "400": {
-            "description": "Bad Request"
+            "description": "Something else went wrong",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "404": {
+            "description": "Could not find something - wrong ID possibly",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
           }
         }
       }
@@ -500,6 +521,23 @@
       },
       "required": [
         "text"
+      ]
+    },
+    "voteInput": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "example": 1
+        },
+        "timeTakenSeconds": {
+          "type": "number",
+          "example": 4
+        }
+      },
+      "required": [
+        "value",
+        "timeTakenSeconds"
       ]
     }
   }

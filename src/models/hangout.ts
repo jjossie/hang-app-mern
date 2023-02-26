@@ -11,6 +11,7 @@ export interface IOption {
   score?: number;
   author: Types.ObjectId;
   votes: IVote[];
+  _id?: Types.ObjectId;
 }
 
 export interface IOptionInput {
@@ -29,19 +30,20 @@ export interface IHangout {
   decision?: IDecision;
 }
 
-export const VoteSchema = new Schema<IVote>({
+const VoteSchema = new Schema<IVote>({
   homie: {type: Schema.Types.ObjectId, ref: "homie", required: true},
   timeTaken: {type: Number, required: true},
+  value: {type: Number, required: true}
 });
 
-export const OptionSchema = new Schema<IOption>({
+const OptionSchema = new Schema<IOption>({
   text: {type: String, required: true},
   score: Number,
   author: {type: Schema.Types.ObjectId, ref: "homie", required: true},
   votes: [VoteSchema],
 });
 
-export const DecisionSchema = new Schema<IDecision>({
+const DecisionSchema = new Schema<IDecision>({
   prompt: {type: String, required: true},
   media: String,
   options: [OptionSchema],

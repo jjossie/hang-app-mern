@@ -9,10 +9,10 @@ const doc = {
     description: 'HangApp allows a group of homies to make decisions in a group using tinder-style swipe voting. This API is for interacting with the data of hangouts and homies.',
   },
 
-  host: `hang-app.onrender.com`,
-  // host: `localhost:3341`,
-  schemes: ['https', 'http'],
-  // schemes: ['http'],
+  // host: `hang-app.onrender.com`,
+  host: `localhost:3341`,
+  // schemes: ['https', 'http'],
+  schemes: ['http'],
 
   definitions: {
     newHomie: {
@@ -50,13 +50,17 @@ const doc = {
     },
     newOption: {
       $text: "Let's do a thing"
+    },
+    voteInput: {
+      $value: 1,
+      $timeTaken: 4
     }
 
   }
 }
 
-// const outputFile = `../src/${process.env.SWAGGER_JSON_FILENAME}`;
-const outputFile = `../src/swagger.json`;
+const outputFile = `../src/${process.env.SWAGGER_JSON_FILENAME}`;
+// const outputFile = `../src/swagger.json`;
 let endpointsFiles = ["../src/app.ts"];
 swaggerAutogen(outputFile, endpointsFiles, doc)
     .then(() => {

@@ -8,6 +8,9 @@ export const decisionRouter = Router();
 
 decisionRouter.put("/:hangoutId/addDecision", requiresAuth(), async (req, res) => {
   // TODO Swag this thang up
+  /*
+
+   */
   try {
     const decision: IDecision = req.body;
     const hangoutId = req.params.hangoutId;

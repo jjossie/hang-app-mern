@@ -25,14 +25,14 @@ export interface IHangout {
 }
 
 export const VoteSchema = new Schema<IVote>({
-  homie: {type: Schema.Types.ObjectId, required: true},
+  homie: {type: Schema.Types.ObjectId, ref: "homie", required: true},
   timeTaken: {type: Number, required: true},
 });
 
 export const OptionSchema = new Schema<IOption>({
   text: {type: String, required: true},
   score: Number,
-  author: {type: Schema.Types.ObjectId, required: true},
+  author: {type: Schema.Types.ObjectId, ref: "homie", required: true},
   votes: [VoteSchema],
 });
 
@@ -43,8 +43,8 @@ export const DecisionSchema = new Schema<IDecision>({
 });
 
 const HangoutSchema = new Schema<IHangout>({
-  creator: {type: Schema.Types.ObjectId, required: true},
-  homies: [Schema.Types.ObjectId],
+  creator: {type: Schema.Types.ObjectId, ref: "homie", required: true},
+  homies: [{type: Schema.Types.ObjectId,  ref: "homie"}],
   decision: DecisionSchema,
 });
 

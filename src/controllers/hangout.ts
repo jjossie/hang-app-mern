@@ -16,7 +16,9 @@ export async function createHangout(hangout: IHangout): Promise<object | null> {
 }
 
 export async function getHangoutById(hangoutId: String): Promise<object | null> {
-  return HangoutModel.findById(hangoutId);
+  return HangoutModel.findById(hangoutId)
+      .populate('homies', ['name', 'isReady'])
+      .populate('creator', 'name');
 }
 
 

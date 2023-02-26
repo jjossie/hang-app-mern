@@ -11,6 +11,7 @@ const HomieSchema = new mongoose.Schema<IHomie>({
   name: {type: String, required: true},
   email: {type: String, required: true, index: true},
   isReady: Boolean,
+  tokenData: Object
 });
 
 export const HomieModel = mongoose.model("homie", HomieSchema);

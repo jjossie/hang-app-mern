@@ -37,7 +37,12 @@ const doc = {
     error: {
       $message: "Something went wrong.",
       error: {}
-    }
+    },
+    newDecision: {
+      $prompt: "What's the move, gang?",
+      media: "",
+    },
+
   }
 }
 

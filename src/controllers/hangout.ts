@@ -42,7 +42,6 @@ export async function removeHomieFromHangout(hangoutId: string, homieId: Types.O
   if (!hangout.homies) throw new Error("No Homies attached to hangout");
 
   // kick da homie
-  // TODO fix this
-  hangout.homies = hangout.homies.filter(homie => homie !== homieId);
+  hangout.homies = hangout.homies.filter(homie => homie.toString() !== homieId.toString());
   return await hangout.save();
 }

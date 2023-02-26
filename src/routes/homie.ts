@@ -50,7 +50,7 @@ homieRouter.get('/:homieId', async (req, res) => {
 /**
  * Not sure why one would need this
  */
-homieRouter.put('/:homieId', /*requiresAuth(),*/ async (req, res) => {
+homieRouter.put('/', /*requiresAuth(),*/ async (req, res) => {
   /*  #swagger.parameters['homie'] = {
         in: 'body',
         description: 'Editing an existing homie. This (for now) will not add them to a hangout',
@@ -63,9 +63,8 @@ homieRouter.put('/:homieId', /*requiresAuth(),*/ async (req, res) => {
         description: 'Not logged in'
   } */
   try {
-    const homieId = req.params.homieId;
     const updatedHomie: IHomie = req.body;
-    const result = await updateHomie(homieId, updatedHomie);
+    const result = await updateHomie(req.homieId, updatedHomie);
     console.log(result);
     res.status(204).json(result);
   } catch (e) {

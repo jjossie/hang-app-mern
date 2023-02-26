@@ -1,8 +1,8 @@
 import {IHomie, HomieModel} from "../models/homie";
-import {HydratedDocument} from "mongoose";
+import {HydratedDocument, Types} from "mongoose";
 
 export async function createHomie(name: String, email: String): Promise<object> {
-  const existingHomie = await getHomieByEmail(email);
+  const existingHomie = await HomieModel.findOne({email});
   if (existingHomie)
     throw new Error("Homie with that email already exists 🫠");
 
@@ -28,14 +28,14 @@ export async function getHomieByEmail(email: String): Promise<HydratedDocument<I
   return homie;
 }
 
-export async function updateHomie(homieId: String, updatedHomie: IHomie) {
+export async function updateHomie(homieId: Types.ObjectId, updatedHomie: IHomie) {
   return HomieModel.findByIdAndUpdate(homieId, updatedHomie);
 }
 
-export async function readyUpHomie(email: String): Promise<object> {
-  const homie = await HomieModel.findOne({email});
+export async function readyUpHomie(homieId: Types.ObjectId): Promise<object> {
+  const homie = await HomieModel.findById(homieId);
   if (!homie)
-    throw new Error("Homie not found with that email");
+    throw new Error("Homie not found with that id");
   homie.isReady = true;
   return await homie.save();
 }

@@ -67,6 +67,30 @@
             "description": "Conflict"
           }
         }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "homie",
+            "in": "body",
+            "description": "Editing an existing homie. This (for now) will not add them to a hangout",
+            "schema": {
+              "$ref": "#/definitions/homie"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully edited the homie"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Not logged in"
+          }
+        }
       }
     },
     "/homie/{homieId}": {
@@ -89,36 +113,6 @@
           },
           "404": {
             "description": "Not Found"
-          }
-        }
-      },
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "homieId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "homie",
-            "in": "body",
-            "description": "Editing an existing homie. This (for now) will not add them to a hangout",
-            "schema": {
-              "$ref": "#/definitions/homie"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successfully edited the homie"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Not logged in"
           }
         }
       }
@@ -146,7 +140,8 @@
             "in": "body",
             "description": "Creating a new hangout",
             "schema": {
-              "$ref": "#/definitions/newHangout"
+              "type": "object",
+              "properties": {}
             }
           }
         ],

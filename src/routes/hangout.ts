@@ -11,13 +11,15 @@ hangoutRouter.post('/', async (req: Request, res: Response) => {
   #swagger.parameters['homie'] = {
     in: 'body',
     description: 'Creating a new hangout',
-    schema: { $ref: '#/definitions/newHangout' }
   }
   */
   try {
-    const newHangout: IHangout = req.body;
+    // We could get hangout info from body, but also we have the creator in the request so let's do it ourselves
+    // const newHangout: IHangout = req.body;
+    const newHangout: IHangout = {
+      creator: req.homieId
+    }
     const result = await createHangout(newHangout);
-    console.log(result);
     return res.status(201).json(result);
   } catch (e) {
     return res.status(400).json({
@@ -69,6 +71,7 @@ hangoutRouter.put('/:hangoutId/join', /*requiresAuth(),*/ async (req: Request, r
   */
   try {
     const hangoutId: string = req.params.hangoutId;
+    console.log(req.homieId);
     const result = await addHomieToHangout(hangoutId, req.homieId);
     return res.status(204).json(result);
   } catch (e) {

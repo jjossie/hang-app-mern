@@ -80,12 +80,11 @@ homieRouter.put('/readyUp', /*requiresAuth(),*/ async (req, res) => {
       description: 'Ready up a single homie. Sets their isReady status to true',
 } */
   try {
-    const email = req.oidc.user!.email;
-    const result = await readyUpHomie(email);
+    const result = await readyUpHomie(req.homieId);
     console.log(result);
-    res.status(204).json(result);
+    return res.status(204).json(result);
   } catch (e) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "Couldn't ready up da homie",
       error: e,
     });

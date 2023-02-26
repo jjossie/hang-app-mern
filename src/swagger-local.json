@@ -244,15 +244,40 @@
             "name": "hangoutId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID of the hangout to get",
+            "schema": {
+              "type": "string",
+              "example": "63face4b17334f46d9b59ad7"
+            }
+          },
+          {
+            "name": "decision",
+            "in": "body",
+            "description": "Decision to add",
+            "schema": {
+              "$ref": "#/definitions/newDecision"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Decision added to hangout",
+            "schema": {
+              "$ref": "#/definitions/hangout"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Something else went wrong",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "404": {
+            "description": "Could not find hangout - wrong ID",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
           }
         }
       }
@@ -265,15 +290,40 @@
             "name": "hangoutId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID of the hangout to add an option to",
+            "schema": {
+              "type": "string",
+              "example": "63face4b17334f46d9b59ad7"
+            }
+          },
+          {
+            "name": "option",
+            "in": "body",
+            "description": "Option to add",
+            "schema": {
+              "$ref": "#/definitions/newOption"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Option added to hangout",
+            "schema": {
+              "$ref": "#/definitions/hangout"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Something else went wrong",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "404": {
+            "description": "Could not find hangout - wrong ID",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
           }
         }
       }
@@ -380,6 +430,28 @@
           "items": {
             "type": "string"
           }
+        },
+        "decision": {
+          "type": "object",
+          "properties": {
+            "prompt": {
+              "type": "string",
+              "example": "What's the move, gang?"
+            },
+            "media": {
+              "type": "string",
+              "example": ""
+            },
+            "_id": {
+              "type": "string",
+              "example": "63fad1279a762e76808f501c"
+            },
+            "options": {
+              "type": "array",
+              "example": [],
+              "items": {}
+            }
+          }
         }
       },
       "required": [
@@ -400,6 +472,34 @@
       },
       "required": [
         "message"
+      ]
+    },
+    "newDecision": {
+      "type": "object",
+      "properties": {
+        "prompt": {
+          "type": "string",
+          "example": "What's the move, gang?"
+        },
+        "media": {
+          "type": "string",
+          "example": ""
+        }
+      },
+      "required": [
+        "prompt"
+      ]
+    },
+    "newOption": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "example": "Let's do a thing"
+        }
+      },
+      "required": [
+        "text"
       ]
     }
   }

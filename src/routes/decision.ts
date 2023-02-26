@@ -1,5 +1,5 @@
 import Router from 'express';
-import {IDecision, IOption, IVote} from "../models/hangout";
+import {IDecision, IOption, IOptionInput, IVote} from "../models/hangout";
 import {addDecisionToHangout, addOptionToHangout, voteOnOption} from "../controllers/decision";
 import {requiresAuth} from "express-openid-connect";
 
@@ -7,9 +7,29 @@ export const decisionRouter = Router();
 
 
 decisionRouter.put("/:hangoutId/addDecision", requiresAuth(), async (req, res) => {
-  // TODO Swag this thang up
   /*
-
+  #swagger.parameters['hangoutId'] = {
+    in: 'path',
+    description: 'ID of the hangout to get',
+    schema: '63face4b17334f46d9b59ad7'
+  }
+  #swagger.parameters['decision'] = {
+    in: 'body',
+    description: 'Decision to add',
+    schema: { $ref: '#/definitions/newDecision' }
+  }
+  #swagger.responses[200] = {
+     description: 'Decision added to hangout',
+     schema:  { $ref: '#/definitions/hangout' }
+  }
+  #swagger.responses[404] = {
+     description: 'Could not find hangout - wrong ID',
+     schema: { $ref: '#/definitions/error' }
+  }
+  #swagger.responses[400] = {
+     description: 'Something else went wrong',
+     schema: { $ref: '#/definitions/error' }
+  }
    */
   try {
     const decision: IDecision = req.body;
@@ -23,11 +43,39 @@ decisionRouter.put("/:hangoutId/addDecision", requiresAuth(), async (req, res) =
 });
 
 decisionRouter.put("/:hangoutId/addOption", requiresAuth(), async (req, res) => {
-  // TODO Swag this thang up
+  /*
+  #swagger.parameters['hangoutId'] = {
+    in: 'path',
+    description: 'ID of the hangout to add an option to',
+    schema: '63face4b17334f46d9b59ad7'
+  }
+  #swagger.parameters['option'] = {
+    in: 'body',
+    description: 'Option to add',
+    schema: { $ref: '#/definitions/newOption' }
+  }
+  #swagger.responses[200] = {
+     description: 'Option added to hangout',
+     schema:  { $ref: '#/definitions/hangout' }
+  }
+  #swagger.responses[404] = {
+     description: 'Could not find hangout - wrong ID',
+     schema: { $ref: '#/definitions/error' }
+  }
+  #swagger.responses[400] = {
+     description: 'Something else went wrong',
+     schema: { $ref: '#/definitions/error' }
+  }
+  */
   try {
-    const option: IOption = req.body;
+    const optionInput: IOptionInput = req.body;
     const hangoutId = req.params.hangoutId;
-    const result = await addOptionToHangout(hangoutId, option);
+    const newOption: IOption = {
+      text: optionInput.text,
+      author: req.homieId,
+      votes: []
+    }
+    const result = await addOptionToHangout(hangoutId, newOption);
     return res.json(result);
   } catch (e) {
     return res.status(400).json({message: "Failed to add Decision", error: e});

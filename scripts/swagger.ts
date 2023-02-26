@@ -32,7 +32,13 @@ const doc = {
           "63e813521329eb317607ee25",
           "63e0372a9d859e637a944c00",
           "63e10d4d3defab4fa0bde684"
-      ]
+      ],
+      "decision": {
+        "prompt": "What's the move, gang?",
+        "media": "",
+        "_id": "63fad1279a762e76808f501c",
+        "options": []
+      }
     },
     error: {
       $message: "Something went wrong.",
@@ -42,6 +48,9 @@ const doc = {
       $prompt: "What's the move, gang?",
       media: "",
     },
+    newOption: {
+      $text: "Let's do a thing"
+    }
 
   }
 }

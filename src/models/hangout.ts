@@ -2,6 +2,7 @@ import {Schema, Types, model} from "mongoose";
 
 export interface IVote {
   homie: Types.ObjectId;
+  value: -1 | 0 | 1;
   timeTaken: number;
 }
 
@@ -10,6 +11,10 @@ export interface IOption {
   score?: number;
   author: Types.ObjectId;
   votes: IVote[];
+}
+
+export interface IOptionInput {
+  text: string
 }
 
 export interface IDecision {

@@ -150,6 +150,7 @@ hangoutRouter.get('/:hangoutId/results', async (req: Request, res: Response) => 
   try {
     const hangoutId: string = req.params.hangoutId;
     const result = await getOptionRanking(hangoutId);
+    console.log(result);
     return res.status(200).json(result);
   } catch (e) {
     return res.status(400).json({

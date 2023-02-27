@@ -1,4 +1,4 @@
-import {IDecision, HangoutModel, IOption, IVote, IHangout} from "../models/hangout";
+import {HangoutModel, IDecision, IHangout, IOption, IVote} from "../models/hangout";
 import {readyUpHomie} from "./homie";
 
 const AUTHOR_BIAS_FACTOR = 0.8;
@@ -47,12 +47,13 @@ export async function voteOnOption(vote: IVote, optionId: string, hangoutId: str
 }
 
 function compareOptionsByScore(lhs: IOption, rhs: IOption): number {
+  // TODO this could be a fidelity problem. Maybe this func should ONLY compare scores, not set them
   if (!lhs.score)
     lhs.score = getScore(lhs);
   if (!rhs.score)
     rhs.score = getScore(rhs);
   if (lhs.score === rhs.score) return 0;
-  else return (lhs.score < rhs.score) ? -1 : 1;
+  else return (lhs.score < rhs.score) ? 1 : -1;
 }
 
 export async function getOptionRanking(hangoutId: string): Promise<IOption[]> {
@@ -65,19 +66,32 @@ export async function getOptionRanking(hangoutId: string): Promise<IOption[]> {
   if (!isVotingFinished(hangout))
     throw new Error("Voting not yet finished");
 
+  // Reset the scores each time we retrieve the option ranking
+  // (in case someone left perhaps?)
+  // ((Maybe we shouldn't?))
+  hangout.decision.options.forEach(option => {option.score = undefined;});
   hangout.decision.options.sort(compareOptionsByScore);
   await hangout.save();
   return hangout.decision.options;
 }
 
+/**
+ * This is really where the business logic happens. Contains the mathematical computation
+ * to determine the sentiment of a given option.
+ * @param {IOption} option
+ * @returns {number}
+ */
 function getScore(option: IOption): number {
   let scores: number[] = [];
   option.votes.forEach(vote => {
     const biasFactor = (vote.homie === option.author) ? AUTHOR_BIAS_FACTOR : 1.0;
-    const score = (MAX_TIME_TAKEN_MILLIS - vote.timeTaken) * vote.value * biasFactor;
+    const score = (MAX_TIME_TAKEN_MILLIS - vote.timeTaken * 1000) / 1000 * biasFactor * vote.value;
+    // console.log(`\ncomputing score for ${vote.homie}'s vote on \"${option.text}\": ${score}`);
     scores.push(score);
   });
   if (scores.length === 0) throw new Error("No votes taken yet on option");
+  // Average out all the scores
+  // console.log(`Average score for ${option.text}: ${avg}`);
   return scores.reduce((prev, curr) => prev + curr, 0) / scores.length;
 }
 

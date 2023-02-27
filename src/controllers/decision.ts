@@ -1,4 +1,5 @@
 import {IDecision, HangoutModel, IOption, IVote, IHangout} from "../models/hangout";
+import {readyUpHomie} from "./homie";
 
 const AUTHOR_BIAS_FACTOR = 0.8;
 const MAX_TIME_TAKEN_MILLIS = 15000;
@@ -73,17 +74,21 @@ function getScore(option: IOption): number {
   let scores: number[] = [];
   option.votes.forEach(vote => {
     const biasFactor = (vote.homie === option.author) ? AUTHOR_BIAS_FACTOR : 1.0;
-    scores.push(biasFactor * (MAX_TIME_TAKEN_MILLIS - vote.timeTaken));
+    const score = (MAX_TIME_TAKEN_MILLIS - vote.timeTaken) * vote.value * biasFactor;
+    scores.push(score);
   });
   if (scores.length === 0) throw new Error("No votes taken yet on option");
   return scores.reduce((prev, curr) => prev + curr, 0) / scores.length;
 }
 
 function isVotingFinished(hangout: IHangout): boolean {
-  hangout.decision!.options!.forEach(option => {
+  hangout.decision?.options?.forEach(option => {
     // This could use some extra assertion
     if (option.votes.length != hangout.homies!.length)
       return false;
+  });
+  hangout.homies?.forEach(async (homie) => {
+    await readyUpHomie(homie, false);
   });
   return true;
 }

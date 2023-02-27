@@ -35,11 +35,11 @@ export async function updateHomie(homieId: Types.ObjectId, updatedHomie: IHomie)
   return HomieModel.findByIdAndUpdate(homieId, updatedHomie);
 }
 
-export async function readyUpHomie(homieId: Types.ObjectId): Promise<HydratedDocument<IHomie>> {
+export async function readyUpHomie(homieId: Types.ObjectId, ready = true): Promise<HydratedDocument<IHomie>> {
   const homie = await HomieModel.findById(homieId);
   if (!homie)
     throw new Error("Homie not found with that id");
-  homie.isReady = true;
+  homie.isReady = ready;
   return await homie.save();
 }
 

@@ -8,9 +8,8 @@ export const hangoutRouter = Router();
 
 hangoutRouter.post('/', async (req: Request, res: Response) => {
   /*
-  #swagger.parameters['homie'] = {
-    in: 'body',
-    description: 'Creating a new hangout',
+  #swagger.responses[201] = {
+    description: 'Created a new hangout',
   }
   */
   try {

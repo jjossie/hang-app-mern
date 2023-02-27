@@ -21,7 +21,7 @@ const doc = {
     homie: {
       $name: "Joe Momma",
       email: "joemomma@gmail.com",
-      isReady: false
+      isReady:   false
     },
     newHangout: {
       $creator: "63e813521329eb317607ee25"
@@ -42,7 +42,9 @@ const doc = {
     },
     error: {
       $message: "Something went wrong.",
-      error: {}
+      error: {
+        message: "details"
+      }
     },
     newDecision: {
       $prompt: "What's the move, gang?",

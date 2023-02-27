@@ -128,11 +128,11 @@ decisionRouter.put("/:hangoutId/vote/:optionId", requiresAuth(), async (req, res
 
 });
 
-hangoutRouter.get('/:hangoutId/results', async (req: Request, res: Response) => {
+hangoutRouter.get('/:hangoutId/results', requiresAuth(), async (req: Request, res: Response) => {
   /*
   #swagger.parameters['hangoutId'] = {
     in: 'path',
-    description: 'ID of the hangout to vote in',
+    description: 'ID of the hangout',
     schema: '63face4b17334f46d9b59ad7'
   }
   #swagger.responses[200] = {

@@ -2,11 +2,12 @@ import Router from 'express';
 import {IHangout} from "../models/hangout";
 import {addHomieToHangout, createHangout, getHangoutById, removeHomieFromHangout} from "../controllers/hangout";
 import {Request, Response} from "express";
+import {requiresAuth} from "express-openid-connect";
 
 export const hangoutRouter = Router();
 
 
-hangoutRouter.post('/', async (req: Request, res: Response) => {
+hangoutRouter.post('/', requiresAuth(), async (req: Request, res: Response) => {
   /*
   #swagger.responses[201] = {
     description: 'Created a new hangout',
@@ -28,7 +29,7 @@ hangoutRouter.post('/', async (req: Request, res: Response) => {
   }
 });
 
-hangoutRouter.get('/:hangoutId', /*requiresAuth(),*/ async (req: Request, res: Response) => {
+hangoutRouter.get('/:hangoutId', requiresAuth(), async (req: Request, res: Response) => {
   /*
   #swagger.parameters['hangoutId'] = {
     in: 'path',
@@ -62,7 +63,7 @@ hangoutRouter.get('/:hangoutId', /*requiresAuth(),*/ async (req: Request, res: R
   }
 });
 
-hangoutRouter.put('/:hangoutId/join', /*requiresAuth(),*/ async (req: Request, res: Response) => {
+hangoutRouter.put('/:hangoutId/join', requiresAuth(), async (req: Request, res: Response) => {
   /*  #swagger.parameters['hangoutId'] = {
         in: 'path',
         description: 'Hangout to add a homie to',
@@ -81,7 +82,7 @@ hangoutRouter.put('/:hangoutId/join', /*requiresAuth(),*/ async (req: Request, r
   }
 });
 
-hangoutRouter.delete('/:hangoutId/leave', /*requiresAuth(),*/ async (req: Request, res: Response) => {
+hangoutRouter.delete('/:hangoutId/leave', requiresAuth(), async (req: Request, res: Response) => {
   /*
   #swagger.responses[200] = {
     description: 'Successfully removed user from hangout',

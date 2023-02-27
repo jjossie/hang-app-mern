@@ -2,7 +2,6 @@ import {IHangout, HangoutModel} from "../models/hangout";
 import assert from "assert";
 import {HomieModel} from "../models/homie";
 import {Types} from "mongoose";
-import ObjectId = Types.ObjectId;
 
 
 export async function createHangout(hangout: IHangout): Promise<object | null> {
@@ -30,7 +29,7 @@ export async function addHomieToHangout(hangoutId: string, homieId: Types.Object
     hangout.homies = [homieId]
 
   if (hangout.homies.filter(obj => obj === homieId).length == 0)
-    hangout.homies.push(new ObjectId(homieId)); // Only add them if they're not added already
+    hangout.homies.push(homieId); // Only add them if they're not added already
 
   return await hangout.save();
 }

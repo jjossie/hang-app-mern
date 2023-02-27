@@ -23,7 +23,7 @@ export const routes = Router();
 routes.use('/api-docs', swaggerUi.serve);
 routes.get('/api-docs', swaggerUi.setup(swaggerDoc));
 
-// Auth0 config -- AFTER /api-docs so that those routes aren't protected
+// Auth0 config
 const authConfig = {
   authRequired: false,
   auth0Logout: true,
